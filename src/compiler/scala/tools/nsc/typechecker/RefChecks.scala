@@ -1657,7 +1657,7 @@ abstract class RefChecks extends Transform {
             case original => original
           }
           if (original != null && original.hasExistingSymbol)
-            checkUndesiredProperties(original.symbol, tree.pos)
+            checkUndesiredProperties(original.symbol, original.pos)
         }
         val annotsBySymbol = new mutable.LinkedHashMap[Symbol, ListBuffer[AnnotationInfo]]()
         val transformedAnnots = {
