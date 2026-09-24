@@ -1652,8 +1652,12 @@ abstract class RefChecks extends Transform {
         annots.foreach { ann =>
           checkVarArgs(ann.atp, tree)
           RefCheckTypeMap.check(ann.atp, tree)
-          if (ann.original != null && ann.original.hasExistingSymbol)
-            checkUndesiredProperties(ann.original.symbol, tree.pos)
+          val original = ann.original match {
+            case Block(Nil, res) => res
+            case original => original
+          }
+          if (original != null && original.hasExistingSymbol)
+            checkUndesiredProperties(original.symbol, original.pos)
         }
         val annotsBySymbol = new mutable.LinkedHashMap[Symbol, ListBuffer[AnnotationInfo]]()
         val transformedAnnots = {
